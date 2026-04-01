@@ -23,8 +23,12 @@ const whyClark = [
     desc: "FIA Grade 4 certified. 4.2km, 18 turns, counter-clockwise. The same track used for Philippine GT Championship, Toyota Vios Cup, and national drift series. Wide runoff areas, modern facilities, and multiple configurations including a dedicated drift pad.",
   },
   {
-    title: "Unbeatable Value",
-    desc: "A 5-star meal in Clark costs $3-5. A quality hotel room is $20-40/night. Your money goes 5-10x further here than in the US, Europe, or Japan. You get a luxury motorsport experience at a fraction of the cost anywhere else.",
+    title: "Incredible Food",
+    desc: "Clark has everything from five-star restaurants to authentic local Filipino cuisine — and it's all outstanding. Your meals are included in the package, and trust us, you'll eat very well. This is a place where the food alone is worth the trip.",
+  },
+  {
+    title: "Safe & Well-Organised",
+    desc: "Clark Freeport Zone is built on the former US Air Force base. The roads are wide, well-maintained, and laid out with American-style planning — spacious, clean, and easy to navigate. It's one of the safest and most organised areas in the Philippines, with 24/7 security throughout the zone.",
   },
   {
     title: "Perfect Weather",
