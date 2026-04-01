@@ -263,8 +263,55 @@ export default function VenuePage() {
         </div>
       </section>
 
-      {/* CIRCUIT MAP */}
+      {/* SUBIC BAY — REST DAY */}
       <section className="py-20 sm:py-28 bg-[var(--gulf-navy)]/20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <p className="font-[family-name:var(--font-accent)] text-[var(--gulf-orange)] text-xs tracking-[0.4em] uppercase mb-3">
+                Your Day Off The Track
+              </p>
+              <h2 className="font-[family-name:var(--font-display)] text-4xl sm:text-5xl tracking-[0.05em] uppercase text-white mb-6">
+                Subic Bay<br />
+                <span className="text-[var(--gulf-teal)]">Deep Sea Fishing</span>
+              </h2>
+              <div className="space-y-4 text-white/50 leading-relaxed">
+                <p>
+                  An hour from Clark lies Subic Bay — crystal clear waters, stunning mountain coastline,
+                  and some of the best deep sea fishing in Southeast Asia.
+                </p>
+                <p>
+                  On your rest day, we can organise a full day charter with{" "}
+                  <span className="text-[var(--gulf-teal)]">Subic Fishing &amp; Yacht Charter</span>.
+                  Head out on the open water, catch tuna, snapper, mahi-mahi — then have your
+                  catch cooked up for dinner that evening.
+                </p>
+                <p className="text-white/30">
+                  It&apos;s the perfect break between track days. Drive hard, fish harder.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="relative aspect-square overflow-hidden">
+                <Image src="/images/subic/catch-tuna.jpg" alt="Tuna catch at Subic Bay" fill className="object-cover" />
+              </div>
+              <div className="relative aspect-square overflow-hidden">
+                <Image src="/images/subic/catch-ocean.jpg" alt="Deep sea fishing Subic" fill className="object-cover" />
+              </div>
+              <div className="relative aspect-square overflow-hidden">
+                <Image src="/images/subic/catch-red.jpg" alt="Red snapper catch" fill className="object-cover" />
+              </div>
+              <div className="relative aspect-square overflow-hidden">
+                <Image src="/images/subic/catch-snapper.jpg" alt="Fishing at Subic Bay" fill className="object-cover" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CIRCUIT MAP */}
+      <section className="py-20 sm:py-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
