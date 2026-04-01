@@ -337,10 +337,10 @@ export default function VenuePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-8">
             {/* Casinos */}
-            <div className="relative overflow-hidden card-lift min-h-[400px] flex flex-col justify-end">
+            <div className="relative overflow-hidden card-lift min-h-[400px] flex flex-col justify-center">
               <div className="absolute inset-0">
                 <Image src="/images/activities/casino.jpg" alt="Mates at the casino in Clark" fill className="object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#050811] via-[#050811]/70 to-[#050811]/30" />
+                <div className="absolute inset-0 bg-[#050811]/60" />
               </div>
               <div className="relative z-10 p-8">
                 <h3 className="font-[family-name:var(--font-display)] text-3xl sm:text-4xl tracking-[0.08em] uppercase text-white mb-3">
@@ -363,10 +363,10 @@ export default function VenuePage() {
             </div>
 
             {/* Golf */}
-            <div className="relative overflow-hidden card-lift min-h-[400px] flex flex-col justify-end">
+            <div className="relative overflow-hidden card-lift min-h-[400px] flex flex-col justify-center">
               <div className="absolute inset-0">
                 <Image src="/images/activities/golf.webp" alt="Mimosa Plus Golf Course Clark" fill className="object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#050811] via-[#050811]/70 to-[#050811]/30" />
+                <div className="absolute inset-0 bg-[#050811]/60" />
               </div>
               <div className="relative z-10 p-8">
                 <h3 className="font-[family-name:var(--font-display)] text-3xl sm:text-4xl tracking-[0.08em] uppercase text-white mb-3">
