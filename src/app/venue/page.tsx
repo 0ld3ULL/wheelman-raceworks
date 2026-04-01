@@ -463,7 +463,7 @@ export default function VenuePage() {
             &ldquo;You know, when you look back over your life, people always say it comes
             down to a few fantastic memories. A week in Clark with a few of your best mates,
             being taught by a pro driver on an international track — now that&apos;s a memory
-            you&apos;ll hold forever.&rdquo;
+            you&apos;ll hold forever — and very few people ever get to do.&rdquo;
           </p>
           <div className="font-[family-name:var(--font-display)] text-4xl text-[var(--gulf-teal)] mb-2">
             From $5,000 USD
