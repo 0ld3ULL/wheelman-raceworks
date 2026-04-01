@@ -1,15 +1,32 @@
 import { NextRequest, NextResponse } from "next/server";
 import { loginUser, createToken } from "@/lib/auth";
+import { authLimiter, getClientIp } from "@/lib/rate-limit";
 
 export async function POST(req: NextRequest) {
+  // C3 FIX: Rate limiting
+  const ip = getClientIp(req);
+  const limit = authLimiter(ip);
+  if (!limit.ok) {
+    return NextResponse.json({ error: "Too many attempts. Try again later." }, { status: 429 });
+  }
+
+  // M4 FIX: Handle malformed JSON
+  let body;
   try {
-    const { email, password } = await req.json();
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
+  }
+
+  try {
+    const { email, password } = body;
 
     if (!email || !password) {
       return NextResponse.json({ error: "Email and password are required" }, { status: 400 });
     }
 
-    const user = loginUser(email, password);
+    // H5 FIX: Async bcrypt
+    const user = await loginUser(email, password);
     if (!user) {
       return NextResponse.json({ error: "Invalid email or password" }, { status: 401 });
     }
