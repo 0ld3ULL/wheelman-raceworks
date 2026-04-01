@@ -30,7 +30,7 @@ const whyClark = [
   },
   {
     title: "Safe & Well-Organised",
-    desc: "Clark Freeport Zone is built on the former US Air Force base. The roads are wide, well-maintained, and laid out with American-style planning — spacious, clean, and easy to navigate. It's one of the safest and most organised areas in the Philippines, with 24/7 security throughout the zone.",
+    desc: "Clark Freeport Zone is built on the former US Air Force base. The roads are wide, well-maintained, and laid out with American-style planning — spacious, clean, and easy to navigate. It's one of the safest and most organised areas in the Philippines, with 24/7 security throughout the zone. When the sun goes down, Clark has 6+ casinos including the Las Vegas-style Hann Casino Resort, and the famous Angeles City nightlife is right next door.",
     image: "/images/why-clark/roads.jpg",
   },
   {
@@ -45,7 +45,7 @@ const whyClark = [
   },
   {
     title: "Subic Bay — Deep Sea Fishing",
-    desc: "Want a rest day off the track? Subic Bay is just an hour away — world-class deep sea fishing, yacht charters, and stunning coastline. We can organise a fishing day for you and the crew. Catch tuna, mahi-mahi, and marlin, then eat your catch for dinner. Not a bad way to spend your day off.",
+    desc: "Want a rest day off the track? Subic Bay is just an hour away — world-class deep sea fishing, yacht charters, and stunning coastline. We can organise a fishing day for you and the crew. Catch tuna, mahi-mahi, and marlin, then eat your catch for dinner. Or stay local — hit the casinos, explore Angeles City, or just relax by the pool. Your days off are as good as your track days.",
     image: "/images/why-clark/fishing.jpg",
   },
 ];
