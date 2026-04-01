@@ -40,7 +40,7 @@ const whyClark = [
   },
   {
     title: "Easy To Get To",
-    desc: "Clark International Airport (CRK) has direct flights from across Asia — Singapore, Hong Kong, Seoul, Taipei, KL, Dubai. The track is 15 minutes from the airport. No 3-hour drive to a remote circuit.",
+    desc: "Clark International Airport (CRK) has direct flights from across Asia — Singapore, Hong Kong, Seoul, Taipei, KL, Dubai. The track is 5 minutes from the airport. No 3-hour drive to a remote circuit.",
     image: "/images/why-clark/airport.jpg",
   },
   {
