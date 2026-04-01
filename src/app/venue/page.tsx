@@ -21,26 +21,32 @@ const whyClark = [
   {
     title: "World-Class Circuit",
     desc: "FIA Grade 4 certified. 4.2km, 18 turns, counter-clockwise. The same track used for Philippine GT Championship, Toyota Vios Cup, and national drift series. Wide runoff areas, modern facilities, and multiple configurations including a dedicated drift pad.",
+    image: "/images/why-clark/circuit.png",
   },
   {
     title: "Incredible Food",
     desc: "Clark has everything from five-star restaurants to authentic local Filipino cuisine — and it's all outstanding. Your meals are included in the package, and trust us, you'll eat very well. This is a place where the food alone is worth the trip.",
+    image: "/images/why-clark/food.jpg",
   },
   {
     title: "Safe & Well-Organised",
     desc: "Clark Freeport Zone is built on the former US Air Force base. The roads are wide, well-maintained, and laid out with American-style planning — spacious, clean, and easy to navigate. It's one of the safest and most organised areas in the Philippines, with 24/7 security throughout the zone.",
+    image: "/images/why-clark/roads.jpg",
   },
   {
     title: "Perfect Weather",
     desc: "Year-round warm weather. Dry season (November to May) is ideal for track days — clear skies, 28-32°C. No snow, no freezing paddocks, no cancelled sessions.",
+    image: "/images/why-clark/weather.jpg",
   },
   {
     title: "Easy To Get To",
     desc: "Clark International Airport (CRK) has direct flights from across Asia — Singapore, Hong Kong, Seoul, Taipei, KL, Dubai. The track is 15 minutes from the airport. No 3-hour drive to a remote circuit.",
+    image: "/images/why-clark/airport.jpg",
   },
   {
     title: "Subic Bay — Deep Sea Fishing",
     desc: "Want a rest day off the track? Subic Bay is just an hour away — world-class deep sea fishing, yacht charters, and stunning coastline. We can organise a fishing day for you and the crew. Catch tuna, mahi-mahi, and marlin, then eat your catch for dinner. Not a bad way to spend your day off.",
+    image: "/images/why-clark/fishing.jpg",
   },
 ];
 
@@ -243,14 +249,19 @@ export default function VenuePage() {
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="space-y-12">
             {whyClark.map((item, idx) => (
-              <div key={item.title} className="flex gap-4">
-                <div className="font-[family-name:var(--font-display)] text-5xl text-[var(--gulf-teal)]/20 leading-none">
-                  {String(idx + 1).padStart(2, "0")}
+              <div key={item.title} className={`grid md:grid-cols-2 gap-8 items-center ${idx % 2 === 1 ? "md:direction-rtl" : ""}`}>
+                <div className={idx % 2 === 1 ? "md:order-2" : ""}>
+                  <div className="relative aspect-[16/10] overflow-hidden">
+                    <Image src={item.image} alt={item.title} fill className="object-cover" />
+                    <div className="absolute top-4 left-4 font-[family-name:var(--font-display)] text-5xl text-[var(--gulf-teal)]/30 leading-none">
+                      {String(idx + 1).padStart(2, "0")}
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-[family-name:var(--font-display)] text-2xl tracking-[0.08em] uppercase text-white mb-3">
+                <div className={idx % 2 === 1 ? "md:order-1" : ""}>
+                  <h3 className="font-[family-name:var(--font-display)] text-2xl sm:text-3xl tracking-[0.08em] uppercase text-white mb-3">
                     {item.title}
                   </h3>
                   <p className="text-white/40 text-sm leading-relaxed">
