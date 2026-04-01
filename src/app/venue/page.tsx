@@ -321,17 +321,11 @@ export default function VenuePage() {
             </div>
 
             <div className="grid grid-cols-2 gap-3">
-              <div className="relative aspect-square overflow-hidden">
+              <div className="relative aspect-[3/4] overflow-hidden">
                 <Image src="/images/subic/catch-tuna.jpg" alt="Tuna catch at Subic Bay" fill className="object-cover" />
               </div>
-              <div className="relative aspect-square overflow-hidden">
+              <div className="relative aspect-[3/4] overflow-hidden">
                 <Image src="/images/subic/catch-ocean.jpg" alt="Deep sea fishing Subic" fill className="object-cover" />
-              </div>
-              <div className="relative aspect-square overflow-hidden">
-                <Image src="/images/subic/catch-red.jpg" alt="Red snapper catch" fill className="object-cover" />
-              </div>
-              <div className="relative aspect-square overflow-hidden">
-                <Image src="/images/subic/catch-snapper.jpg" alt="Fishing at Subic Bay" fill className="object-cover" />
               </div>
             </div>
           </div>
@@ -343,47 +337,53 @@ export default function VenuePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-8">
             {/* Casinos */}
-            <div className="bg-[#0a0e1a] border border-white/5 p-8 card-lift">
-              <div className="text-4xl mb-4">🎰</div>
-              <h3 className="font-[family-name:var(--font-display)] text-2xl sm:text-3xl tracking-[0.08em] uppercase text-white mb-3">
-                6+ Casinos
-              </h3>
-              <p className="text-white/40 text-sm leading-relaxed mb-4">
-                Clark has over six casinos right on your doorstep. The Hann Casino Resort
-                is a full Las Vegas-style experience — 800 slot machines, 91 gaming tables,
-                five-star hotels and 15 restaurants all under one roof. Widus, Midori, Royce,
-                Mimosa, and Oxford round out the options. Whether you want a big night out
-                or a casual flutter after dinner, it&apos;s all here.
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {["Hann Casino Resort", "Widus", "Midori", "Royce", "Mimosa", "Oxford"].map((c) => (
-                  <span key={c} className="text-white/20 text-xs border border-white/10 px-2 py-1 font-[family-name:var(--font-accent)] tracking-wider">
-                    {c}
-                  </span>
-                ))}
+            <div className="relative overflow-hidden card-lift min-h-[400px] flex flex-col justify-end">
+              <div className="absolute inset-0">
+                <Image src="/images/venue/venue-1.jpg" alt="Casino nightlife in Clark" fill className="object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050811] via-[#050811]/70 to-[#050811]/30" />
+              </div>
+              <div className="relative z-10 p-8">
+                <h3 className="font-[family-name:var(--font-display)] text-3xl sm:text-4xl tracking-[0.08em] uppercase text-white mb-3">
+                  6+ Casinos
+                </h3>
+                <p className="text-white/60 text-sm leading-relaxed mb-4">
+                  Clark has over six casinos right on your doorstep. The Hann Casino Resort
+                  is a full Las Vegas-style experience — 800 slot machines, 91 gaming tables,
+                  five-star hotels and 15 restaurants all under one roof. Widus, Midori, Royce,
+                  Mimosa, and Oxford round out the options.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {["Hann Casino Resort", "Widus", "Midori", "Royce", "Mimosa", "Oxford"].map((c) => (
+                    <span key={c} className="text-white/30 text-xs border border-white/20 px-2 py-1 font-[family-name:var(--font-accent)] tracking-wider">
+                      {c}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
 
             {/* Golf */}
-            <div className="bg-[#0a0e1a] border border-white/5 p-8 card-lift">
-              <div className="text-4xl mb-4">⛳</div>
-              <h3 className="font-[family-name:var(--font-display)] text-2xl sm:text-3xl tracking-[0.08em] uppercase text-white mb-3">
-                5 Golf Courses
-              </h3>
-              <p className="text-white/40 text-sm leading-relaxed mb-4">
-                Clark is one of the Philippines&apos; top golf destinations. Mimosa Plus has
-                two 18-hole championship courses — including the Mountainview course where
-                Tiger Woods played in 1998. Clark Sun Valley offers another 36 holes across
-                two distinct layouts. Fontana and FA Korea Country Club round out the options.
-                Beautiful courses, year-round playing weather, and green fees that won&apos;t
-                break the bank.
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {["Mimosa Plus (36 holes)", "Clark Sun Valley (36 holes)", "Fontana", "FA Korea CC"].map((c) => (
-                  <span key={c} className="text-white/20 text-xs border border-white/10 px-2 py-1 font-[family-name:var(--font-accent)] tracking-wider">
-                    {c}
-                  </span>
-                ))}
+            <div className="relative overflow-hidden card-lift min-h-[400px] flex flex-col justify-end">
+              <div className="absolute inset-0">
+                <Image src="/images/activities/golf.webp" alt="Mimosa Plus Golf Course Clark" fill className="object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050811] via-[#050811]/70 to-[#050811]/30" />
+              </div>
+              <div className="relative z-10 p-8">
+                <h3 className="font-[family-name:var(--font-display)] text-3xl sm:text-4xl tracking-[0.08em] uppercase text-white mb-3">
+                  5 Golf Courses
+                </h3>
+                <p className="text-white/60 text-sm leading-relaxed mb-4">
+                  Mimosa Plus has two 18-hole championship courses — including the Mountainview
+                  course where Tiger Woods played in 1998. Clark Sun Valley offers another 36
+                  holes across two distinct layouts. Beautiful courses and year-round playing weather.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {["Mimosa Plus (36 holes)", "Clark Sun Valley (36 holes)", "Fontana", "FA Korea CC"].map((c) => (
+                    <span key={c} className="text-white/30 text-xs border border-white/20 px-2 py-1 font-[family-name:var(--font-accent)] tracking-wider">
+                      {c}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
