@@ -339,7 +339,7 @@ export default function VenuePage() {
             {/* Casinos */}
             <div className="relative overflow-hidden card-lift min-h-[400px] flex flex-col justify-end">
               <div className="absolute inset-0">
-                <Image src="/images/venue/venue-1.jpg" alt="Casino nightlife in Clark" fill className="object-cover" />
+                <Image src="/images/activities/casino.jpg" alt="Mates at the casino in Clark" fill className="object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#050811] via-[#050811]/70 to-[#050811]/30" />
               </div>
               <div className="relative z-10 p-8">
