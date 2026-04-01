@@ -30,8 +30,8 @@ export function Navbar() {
               <Image
                 src="/images/logo-bw.jpg"
                 alt="Wheelman Raceworks"
-                width={48}
-                height={48}
+                width={72}
+                height={72}
                 className="rounded-full border border-[var(--gulf-teal)]/30 group-hover:border-[var(--gulf-teal)] transition-colors"
               />
               <div className="hidden sm:block">

@@ -12,8 +12,8 @@ export function Footer() {
               <Image
                 src="/images/logo-bw.jpg"
                 alt="Wheelman Raceworks"
-                width={56}
-                height={56}
+                width={84}
+                height={84}
                 className="rounded-full border border-[var(--gulf-teal)]/20"
               />
               <div>
