@@ -142,42 +142,55 @@ export default function VenuePage() {
               The Track Week
             </h2>
             {/* Pricing tiers */}
-          <div className="grid sm:grid-cols-3 gap-4 mt-10 max-w-3xl mx-auto">
-            <div className="bg-[#050811]/80 border border-white/10 px-6 py-8 text-center">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-10 max-w-4xl mx-auto">
+            <div className="bg-[#050811]/80 border border-white/10 px-5 py-8 text-center">
               <div className="text-white/30 text-xs font-[family-name:var(--font-accent)] tracking-widest uppercase mb-2">
                 Solo
               </div>
-              <div className="font-[family-name:var(--font-display)] text-5xl text-white">
+              <div className="font-[family-name:var(--font-display)] text-4xl sm:text-5xl text-white">
                 $5,999
               </div>
               <div className="text-white/30 text-sm mt-1">per driver</div>
             </div>
-            <div className="bg-[#050811]/80 border border-[var(--gulf-teal)]/30 px-6 py-8 text-center relative">
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[var(--gulf-orange)] text-white text-xs font-[family-name:var(--font-accent)] tracking-widest uppercase px-3 py-1">
-                Popular
-              </div>
-              <div className="text-[var(--gulf-orange)] text-xs font-[family-name:var(--font-accent)] tracking-widest uppercase mb-2">
+            <div className="bg-[#050811]/80 border border-white/10 px-5 py-8 text-center">
+              <div className="text-white/40 text-xs font-[family-name:var(--font-accent)] tracking-widest uppercase mb-2">
                 2 Drivers
               </div>
-              <div className="font-[family-name:var(--font-display)] text-5xl text-[var(--gulf-teal)] glow-teal">
+              <div className="font-[family-name:var(--font-display)] text-4xl sm:text-5xl text-[var(--gulf-teal)]">
                 $5,500
               </div>
               <div className="text-white/30 text-sm mt-1">per driver</div>
               <div className="text-[var(--gulf-teal)] text-xs mt-2">Save $499 each</div>
             </div>
-            <div className="bg-[#050811]/80 border border-[var(--gulf-orange)]/30 px-6 py-8 text-center">
-              <div className="text-[var(--gulf-orange)] text-xs font-[family-name:var(--font-accent)] tracking-widest uppercase mb-2">
-                3+ Drivers
+            <div className="bg-[#050811]/80 border border-white/10 px-5 py-8 text-center">
+              <div className="text-white/40 text-xs font-[family-name:var(--font-accent)] tracking-widest uppercase mb-2">
+                3 Drivers
               </div>
-              <div className="font-[family-name:var(--font-display)] text-5xl text-[var(--gulf-orange)] glow-orange">
+              <div className="font-[family-name:var(--font-display)] text-4xl sm:text-5xl text-[var(--gulf-teal)]">
+                $5,250
+              </div>
+              <div className="text-white/30 text-sm mt-1">per driver</div>
+              <div className="text-[var(--gulf-teal)] text-xs mt-2">Save $749 each</div>
+            </div>
+            <div className="bg-[#050811]/80 border border-[var(--gulf-orange)]/30 px-5 py-8 text-center relative">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[var(--gulf-orange)] text-white text-xs font-[family-name:var(--font-accent)] tracking-widest uppercase px-3 py-1">
+                Best Value
+              </div>
+              <div className="text-[var(--gulf-orange)] text-xs font-[family-name:var(--font-accent)] tracking-widest uppercase mb-2">
+                4+ Drivers
+              </div>
+              <div className="font-[family-name:var(--font-display)] text-4xl sm:text-5xl text-[var(--gulf-orange)] glow-orange">
                 $5,000
               </div>
               <div className="text-white/30 text-sm mt-1">per driver</div>
               <div className="text-[var(--gulf-orange)] text-xs mt-2">Save $999 each</div>
             </div>
           </div>
-          <p className="text-white/20 text-xs mt-4 font-[family-name:var(--font-accent)] tracking-wider">
+          <p className="text-white/20 text-xs mt-6 font-[family-name:var(--font-accent)] tracking-wider">
             7 NIGHTS / 4 TRACK DAYS — ALL-INCLUSIVE — JUST BOOK YOUR FLIGHT
+          </p>
+          <p className="text-white/10 text-xs mt-2">
+            Grab your mates. 4 drivers = $20,000 total. That&apos;s $4K less than booking solo.
           </p>
           </div>
 
