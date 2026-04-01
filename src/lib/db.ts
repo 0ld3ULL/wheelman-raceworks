@@ -106,6 +106,7 @@ function initSchema(db: Database.Database) {
       ["drift-experience", "Drift Ride-Along Experience", "Be a passenger in Boodie's RX-7 during a full-speed drift session. Not for the faint-hearted. Great gift idea.", 250000, "30 minutes", "🚗", 4],
       ["car-tuning", "Car Tuning Consultation", "Bring your car — suspension geometry, alignment, engine tune review, and setup advice for street or track. Includes dyno time if available.", 350000, "2–3 hours", "⚙️", 5],
       ["race-build", "Race Build Consultation", "Planning a build? Discuss cage design, engine swaps, drivetrain, aero, and competition requirements. Full project scoping and quote.", 200000, "1–2 hours", "🔧", 6],
+      ["track-week", "The Track Week — All Inclusive", "7 nights accommodation, 4 full track days on Clark International Speedway, all meals, airport pickup, pro coaching from Boodie, car and equipment provided. Just book your flight to Clark (CRK).", 22400000, "7 nights / 4 track days", "✈️", 0],
     ];
     const insertMany = db.transaction(() => {
       for (const s of services) {
