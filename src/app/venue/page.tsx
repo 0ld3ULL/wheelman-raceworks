@@ -274,8 +274,25 @@ export default function VenuePage() {
         </div>
       </section>
 
+      {/* REST DAYS INTRO */}
+      <section className="pt-20 sm:pt-28 pb-8">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p className="font-[family-name:var(--font-accent)] text-[var(--gulf-orange)] text-xs tracking-[0.4em] uppercase mb-3">
+            Off The Track
+          </p>
+          <h2 className="font-[family-name:var(--font-display)] text-4xl sm:text-6xl tracking-[0.05em] uppercase text-white mb-6">
+            Your Days Off
+          </h2>
+          <p className="text-white/50 text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto">
+            And on the days you&apos;re <span className="text-[var(--gulf-teal)] font-medium italic">not</span> driving,
+            you have the choice of deep sea fishing, world-class golf, casinos,
+            and of course the Angeles nightlife.
+          </p>
+        </div>
+      </section>
+
       {/* SUBIC BAY — REST DAY */}
-      <section className="py-20 sm:py-28 bg-[var(--gulf-navy)]/20">
+      <section className="py-12 sm:py-16 bg-[var(--gulf-navy)]/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
