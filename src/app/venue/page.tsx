@@ -459,8 +459,11 @@ export default function VenuePage() {
           <h2 className="font-[family-name:var(--font-display)] text-5xl sm:text-7xl tracking-[0.05em] uppercase text-white mb-4">
             Your Best <span className="text-[var(--gulf-orange)] glow-orange">Week</span>
           </h2>
-          <p className="text-white/40 text-lg mb-4 max-w-xl mx-auto">
-            4 days on a world-class circuit. Pro coaching. All-inclusive.
+          <p className="text-white/50 text-lg sm:text-xl mb-6 max-w-2xl mx-auto italic leading-relaxed">
+            &ldquo;You know, when you look back over your life, people always say it comes
+            down to a few fantastic memories. A week in Clark with a few of your best mates,
+            being taught by a pro driver on an international track — now that&apos;s a memory
+            you&apos;ll hold forever.&rdquo;
           </p>
           <div className="font-[family-name:var(--font-display)] text-4xl text-[var(--gulf-teal)] mb-2">
             From $5,000 USD
