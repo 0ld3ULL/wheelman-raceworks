@@ -141,17 +141,44 @@ export default function VenuePage() {
             <h2 className="font-[family-name:var(--font-display)] text-5xl sm:text-7xl tracking-[0.05em] uppercase text-white mb-4">
               The Track Week
             </h2>
-            <div className="mt-6 inline-block bg-[#050811]/80 border border-[var(--gulf-teal)]/30 px-8 py-6">
-              <div className="font-[family-name:var(--font-display)] text-6xl sm:text-7xl text-[var(--gulf-teal)] glow-teal">
-                $4,000
+            {/* Pricing tiers */}
+          <div className="grid sm:grid-cols-3 gap-4 mt-10 max-w-3xl mx-auto">
+            <div className="bg-[#050811]/80 border border-white/10 px-6 py-8 text-center">
+              <div className="text-white/30 text-xs font-[family-name:var(--font-accent)] tracking-widest uppercase mb-2">
+                Solo
               </div>
-              <div className="text-white/40 text-sm font-[family-name:var(--font-accent)] tracking-widest uppercase mt-1">
-                USD — 7 Nights / 4 Track Days
+              <div className="font-[family-name:var(--font-display)] text-5xl text-white">
+                $5,999
               </div>
-              <div className="text-white/20 text-xs mt-2">
-                $1,000 per track day — all-inclusive
-              </div>
+              <div className="text-white/30 text-sm mt-1">per driver</div>
             </div>
+            <div className="bg-[#050811]/80 border border-[var(--gulf-teal)]/30 px-6 py-8 text-center relative">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[var(--gulf-orange)] text-white text-xs font-[family-name:var(--font-accent)] tracking-widest uppercase px-3 py-1">
+                Popular
+              </div>
+              <div className="text-[var(--gulf-orange)] text-xs font-[family-name:var(--font-accent)] tracking-widest uppercase mb-2">
+                2 Drivers
+              </div>
+              <div className="font-[family-name:var(--font-display)] text-5xl text-[var(--gulf-teal)] glow-teal">
+                $5,500
+              </div>
+              <div className="text-white/30 text-sm mt-1">per driver</div>
+              <div className="text-[var(--gulf-teal)] text-xs mt-2">Save $499 each</div>
+            </div>
+            <div className="bg-[#050811]/80 border border-[var(--gulf-orange)]/30 px-6 py-8 text-center">
+              <div className="text-[var(--gulf-orange)] text-xs font-[family-name:var(--font-accent)] tracking-widest uppercase mb-2">
+                3+ Drivers
+              </div>
+              <div className="font-[family-name:var(--font-display)] text-5xl text-[var(--gulf-orange)] glow-orange">
+                $5,000
+              </div>
+              <div className="text-white/30 text-sm mt-1">per driver</div>
+              <div className="text-[var(--gulf-orange)] text-xs mt-2">Save $999 each</div>
+            </div>
+          </div>
+          <p className="text-white/20 text-xs mt-4 font-[family-name:var(--font-accent)] tracking-wider">
+            7 NIGHTS / 4 TRACK DAYS — ALL-INCLUSIVE — JUST BOOK YOUR FLIGHT
+          </p>
           </div>
 
           {/* What's included */}
@@ -356,9 +383,10 @@ export default function VenuePage() {
           <p className="text-white/40 text-lg mb-4 max-w-xl mx-auto">
             4 days on a world-class circuit. Pro coaching. All-inclusive.
           </p>
-          <div className="font-[family-name:var(--font-display)] text-4xl text-[var(--gulf-teal)] mb-8">
-            $4,000 USD
+          <div className="font-[family-name:var(--font-display)] text-4xl text-[var(--gulf-teal)] mb-2">
+            From $5,000 USD
           </div>
+          <p className="text-white/30 text-sm mb-8">per driver — group discounts available</p>
           <Link href="/book" className="btn-primary text-xl px-12 py-4">
             Book Your Track Week
           </Link>

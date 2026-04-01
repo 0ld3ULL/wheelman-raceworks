@@ -16,7 +16,7 @@ const serviceOptions: ServiceOption[] = [
     id: "track-week",
     title: "The Track Week — All Inclusive",
     desc: "7 nights accommodation, 4 full track days at Clark International Speedway, all meals, airport pickup, pro coaching, car & equipment. Just book your flight.",
-    price: "$4,000 USD",
+    price: "$5,999 USD",
     duration: "7 nights / 4 track days",
     icon: "✈️",
   },
