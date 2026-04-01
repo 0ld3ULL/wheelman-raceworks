@@ -321,6 +321,58 @@ export default function VenuePage() {
         </div>
       </section>
 
+      {/* MORE REST DAY OPTIONS */}
+      <section className="py-16 sm:py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Casinos */}
+            <div className="bg-[#0a0e1a] border border-white/5 p-8 card-lift">
+              <div className="text-4xl mb-4">🎰</div>
+              <h3 className="font-[family-name:var(--font-display)] text-2xl sm:text-3xl tracking-[0.08em] uppercase text-white mb-3">
+                6+ Casinos
+              </h3>
+              <p className="text-white/40 text-sm leading-relaxed mb-4">
+                Clark has over six casinos right on your doorstep. The Hann Casino Resort
+                is a full Las Vegas-style experience — 800 slot machines, 91 gaming tables,
+                five-star hotels and 15 restaurants all under one roof. Widus, Midori, Royce,
+                Mimosa, and Oxford round out the options. Whether you want a big night out
+                or a casual flutter after dinner, it&apos;s all here.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {["Hann Casino Resort", "Widus", "Midori", "Royce", "Mimosa", "Oxford"].map((c) => (
+                  <span key={c} className="text-white/20 text-xs border border-white/10 px-2 py-1 font-[family-name:var(--font-accent)] tracking-wider">
+                    {c}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Golf */}
+            <div className="bg-[#0a0e1a] border border-white/5 p-8 card-lift">
+              <div className="text-4xl mb-4">⛳</div>
+              <h3 className="font-[family-name:var(--font-display)] text-2xl sm:text-3xl tracking-[0.08em] uppercase text-white mb-3">
+                5 Golf Courses
+              </h3>
+              <p className="text-white/40 text-sm leading-relaxed mb-4">
+                Clark is one of the Philippines&apos; top golf destinations. Mimosa Plus has
+                two 18-hole championship courses — including the Mountainview course where
+                Tiger Woods played in 1998. Clark Sun Valley offers another 36 holes across
+                two distinct layouts. Fontana and FA Korea Country Club round out the options.
+                Beautiful courses, year-round playing weather, and green fees that won&apos;t
+                break the bank.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {["Mimosa Plus (36 holes)", "Clark Sun Valley (36 holes)", "Fontana", "FA Korea CC"].map((c) => (
+                  <span key={c} className="text-white/20 text-xs border border-white/10 px-2 py-1 font-[family-name:var(--font-accent)] tracking-wider">
+                    {c}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CIRCUIT MAP */}
       <section className="py-20 sm:py-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
