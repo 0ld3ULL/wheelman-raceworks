@@ -38,6 +38,10 @@ const whyClark = [
     title: "Easy To Get To",
     desc: "Clark International Airport (CRK) has direct flights from across Asia — Singapore, Hong Kong, Seoul, Taipei, KL, Dubai. The track is 15 minutes from the airport. No 3-hour drive to a remote circuit.",
   },
+  {
+    title: "Subic Bay — Deep Sea Fishing",
+    desc: "Want a rest day off the track? Subic Bay is just an hour away — world-class deep sea fishing, yacht charters, and stunning coastline. We can organise a fishing day for you and the crew. Catch tuna, mahi-mahi, and marlin, then eat your catch for dinner. Not a bad way to spend your day off.",
+  },
 ];
 
 const galleryImages = [
