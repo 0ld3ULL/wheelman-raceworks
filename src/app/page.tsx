@@ -1,5 +1,17 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Wheelman Raceworks | Pro Drift & Motorsport Services",
+  description: "Professional drift driving lessons, car tuning, and race prep by Pro Class drifter Boodie Dabasol at Clark International Speedway, Philippines.",
+  alternates: { canonical: "https://wheelmanraceworks.com" },
+  openGraph: {
+    title: "Wheelman Raceworks | Pro Drift & Motorsport Services",
+    description: "Drift lessons, race driving, car tuning, and all-inclusive Track Weeks with Pro Class driver Boodie Dabasol at Clark International Speedway.",
+    url: "https://wheelmanraceworks.com",
+  },
+};
 
 const services = [
   {
@@ -31,9 +43,57 @@ const stats = [
   { value: "Clark", label: "Speedway Base" },
 ];
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SportsActivityLocation",
+  name: "Wheelman Raceworks",
+  description: "Professional drift driving lessons, car tuning, and race prep by Pro Class drifter Boodie Dabasol at Clark International Speedway, Philippines.",
+  url: "https://wheelmanraceworks.com",
+  // telephone: add Boodie's number when available
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Clark International Speedway",
+    addressLocality: "Mabalacat",
+    addressRegion: "Pampanga",
+    addressCountry: "PH",
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 15.1864,
+    longitude: 120.5597,
+  },
+  image: "https://wheelmanraceworks.com/images/rx7-drift-smoke.jpg",
+  sameAs: [
+    "https://www.facebook.com/TeamWheelman/",
+    "https://www.instagram.com/rocketboodie/",
+  ],
+  founder: {
+    "@type": "Person",
+    name: "Boodie Dabasol",
+    alternateName: "Rocketboodie",
+    jobTitle: "Pro Class Drift Driver",
+  },
+  makesOffer: [
+    {
+      "@type": "Offer",
+      itemOffered: { "@type": "Service", name: "Drift Lessons", description: "Learn drift driving from a Pro Class champion" },
+      priceSpecification: { "@type": "PriceSpecification", price: "5000", priceCurrency: "PHP" },
+    },
+    {
+      "@type": "Offer",
+      itemOffered: { "@type": "Service", name: "All-Inclusive Track Week", description: "7 nights, 4 track days, meals, coaching, accommodation at Clark International Speedway" },
+      priceSpecification: { "@type": "PriceSpecification", priceCurrency: "USD", minPrice: "5000", maxPrice: "5999" },
+    },
+  ],
+};
+
 export default function Home() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* HERO */}
       <section className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">

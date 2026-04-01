@@ -1,5 +1,18 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "The Track — Clark International Speedway",
+  description: "FIA-certified 4.2km circuit with 18 turns. Book an all-inclusive Track Week from $5,000 — hotel, meals, pro coaching by Boodie Dabasol in Clark, Philippines.",
+  alternates: { canonical: "https://wheelmanraceworks.com/venue" },
+  openGraph: {
+    title: "The Track — Clark International Speedway | Wheelman Raceworks",
+    description: "FIA Grade 4 certified. 4.2km, 18 turns. All-inclusive Track Weeks from $5,000 with Pro Class drift coaching.",
+    url: "https://wheelmanraceworks.com/venue",
+    images: [{ url: "/images/clark-aerial.jpg", width: 1200, height: 630, alt: "Clark International Speedway aerial view" }],
+  },
+};
 
 const trackStats = [
   { value: "4.2km", label: "Full Circuit" },
