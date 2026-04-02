@@ -27,6 +27,11 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   const { id } = await params;
   const db = getDb();
 
+  const validStatuses = ["planning", "confirmed", "active", "completed", "cancelled"];
+  if (body.status && !validStatuses.includes(body.status)) {
+    return NextResponse.json({ error: `Invalid status. Must be: ${validStatuses.join(", ")}` }, { status: 400 });
+  }
+
   const allowed = [
     "title", "start_date", "end_date", "num_days", "status",
     "hotel_name", "hotel_cost_per_night", "hotel_checkin", "hotel_checkout", "hotel_booked", "hotel_notes",

@@ -196,16 +196,14 @@ export default function TrackWeekDetailPage() {
                         className="bg-[#050811] border border-white/10 px-2 py-1.5 text-xs text-white focus:outline-none" />
                     </>
                   ) : (
-                    <input value={day.notes || ""} placeholder={day.day_type === "off" ? "e.g. Fishing trip" : ""}
+                    <input key={`dn-${day.id}-${day.notes}`} defaultValue={day.notes || ""} placeholder={day.day_type === "off" ? "e.g. Fishing trip" : ""}
                       onBlur={(e) => updateDay(day.id, { notes: e.target.value })}
-                      onChange={() => {}}
                       onKeyDown={(e) => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }}
                       className="bg-[#050811] border border-white/10 px-2 py-1.5 text-xs text-white/50 focus:outline-none col-span-2" />
                   )}
                   {day.day_type === "track" && (
-                    <input value={day.notes || ""} placeholder="Notes..."
+                    <input key={`tn-${day.id}-${day.notes}`} defaultValue={day.notes || ""} placeholder="Notes..."
                       onBlur={(e) => updateDay(day.id, { notes: e.target.value })}
-                      onChange={() => {}}
                       onKeyDown={(e) => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }}
                       className="bg-transparent border-none px-0 py-1.5 text-xs text-white/30 focus:outline-none" />
                   )}
@@ -281,13 +279,13 @@ export default function TrackWeekDetailPage() {
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
               <div>
                 <label className={labelCls}>Hotel Name</label>
-                <input value={tw.hotel_name || ""} onBlur={(e) => updateTw({ hotel_name: e.target.value })}
-                  onChange={() => {}} placeholder="Quest Hotel Clark" className={inputCls} />
+                <input key={`hn-${tw.hotel_name}`} defaultValue={tw.hotel_name || ""} onBlur={(e) => updateTw({ hotel_name: e.target.value })}
+                  placeholder="Quest Hotel Clark" className={inputCls} />
               </div>
               <div>
                 <label className={labelCls}>Cost/Night (USD)</label>
-                <input type="number" value={tw.hotel_cost_per_night / 100 || ""} onBlur={(e) => updateTw({ hotel_cost_per_night: Math.round(parseFloat(e.target.value || "0") * 100) })}
-                  onChange={() => {}} placeholder="45" className={inputCls} />
+                <input type="number" key={`hc-${tw.hotel_cost_per_night}`} defaultValue={tw.hotel_cost_per_night / 100 || ""} onBlur={(e) => updateTw({ hotel_cost_per_night: Math.round(parseFloat(e.target.value || "0") * 100) })}
+                  placeholder="45" className={inputCls} />
               </div>
               <div className="flex items-end pb-1">
                 <label className="flex items-center gap-2 text-white/50 text-sm cursor-pointer">
@@ -305,20 +303,20 @@ export default function TrackWeekDetailPage() {
               </div>
               <div>
                 <label className={labelCls}>Hotel Notes</label>
-                <input value={tw.hotel_notes || ""} onBlur={(e) => updateTw({ hotel_notes: e.target.value })}
-                  onChange={() => {}} className={inputCls} />
+                <input key={`hnt-${tw.hotel_notes}`} defaultValue={tw.hotel_notes || ""} onBlur={(e) => updateTw({ hotel_notes: e.target.value })}
+                  className={inputCls} />
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
               <div>
                 <label className={labelCls}>Dietary Notes (Group)</label>
-                <input value={tw.dietary_notes || ""} onBlur={(e) => updateTw({ dietary_notes: e.target.value })}
-                  onChange={() => {}} placeholder="No pork for guest 2" className={inputCls} />
+                <input key={`diet-${tw.dietary_notes}`} defaultValue={tw.dietary_notes || ""} onBlur={(e) => updateTw({ dietary_notes: e.target.value })}
+                  placeholder="No pork for guest 2" className={inputCls} />
               </div>
               <div>
                 <label className={labelCls}>Meal Plan Notes</label>
-                <input value={tw.meal_plan_notes || ""} onBlur={(e) => updateTw({ meal_plan_notes: e.target.value })}
-                  onChange={() => {}} placeholder="Breakfast at hotel, lunch at track" className={inputCls} />
+                <input key={`meal-${tw.meal_plan_notes}`} defaultValue={tw.meal_plan_notes || ""} onBlur={(e) => updateTw({ meal_plan_notes: e.target.value })}
+                  placeholder="Breakfast at hotel, lunch at track" className={inputCls} />
               </div>
             </div>
           </div>
@@ -395,7 +393,7 @@ export default function TrackWeekDetailPage() {
           {/* ═══ NOTES ═══ */}
           <div className={sectionCls}>
             <h2 className="font-[family-name:var(--font-display)] text-xl tracking-[0.1em] uppercase text-[var(--gulf-teal)] mb-4">Notes</h2>
-            <textarea value={tw.notes || ""} onBlur={(e) => updateTw({ notes: e.target.value })} onChange={() => {}}
+            <textarea key={`notes-${tw.notes}`} defaultValue={tw.notes || ""} onBlur={(e) => updateTw({ notes: e.target.value })}
               rows={4} placeholder="General notes about this Track Week..."
               className="w-full bg-[#050811] border border-white/10 px-4 py-3 text-white text-sm focus:border-[var(--gulf-teal)] focus:outline-none resize-none" />
           </div>

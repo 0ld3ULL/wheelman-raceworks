@@ -1,7 +1,8 @@
 "use client";
 
 import { useAuth } from "@/lib/AuthContext";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 interface TrackWeek {
@@ -26,12 +27,36 @@ const STATUS_COLORS: Record<string, string> = {
   cancelled: "text-red-400 border-red-400/20",
 };
 
-export default function TrackWeeksPage() {
+export default function TrackWeeksPageWrapper() {
+  return (
+    <Suspense fallback={<div className="pt-24 text-center text-white/40">Loading...</div>}>
+      <TrackWeeksPage />
+    </Suspense>
+  );
+}
+
+function TrackWeeksPage() {
   const { user, loading } = useAuth();
   const [trackWeeks, setTrackWeeks] = useState<TrackWeek[]>([]);
+  const searchParams = useSearchParams();
   const [filter, setFilter] = useState("all");
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ title: "", start_date: "", num_days: 7, revenue_cents: 0 });
+
+  // Pre-fill from booking link
+  useEffect(() => {
+    const fromBooking = searchParams.get("from_booking");
+    if (fromBooking) {
+      const name = searchParams.get("name") || "";
+      const date = searchParams.get("date") || "";
+      setForm(prev => ({
+        ...prev,
+        title: name ? `${name}'s Track Week` : "",
+        start_date: date,
+      }));
+      setShowForm(true);
+    }
+  }, [searchParams]);
 
   const fetchTrackWeeks = useCallback(async () => {
     const url = filter === "all" ? "/api/admin/track-weeks" : `/api/admin/track-weeks?status=${filter}`;
