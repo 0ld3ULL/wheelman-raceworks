@@ -266,42 +266,57 @@ export default function AdminPage() {
 
           return (
             <div className="space-y-10">
-              {/* Calendar — next 4 weeks */}
+              {/* Yearly Calendar */}
               <div>
                 <h2 className="font-[family-name:var(--font-display)] text-2xl tracking-[0.1em] uppercase text-white mb-4">
                   Calendar
                 </h2>
-                <div className="grid grid-cols-7 gap-1">
-                  {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(d => (
-                    <div key={d} className="text-center text-white/30 text-xs font-[family-name:var(--font-accent)] tracking-widest uppercase py-2">{d}</div>
-                  ))}
-                  {/* Leading empty cells to align first day */}
-                  {Array.from({ length: calendarDays[0].getDay() }).map((_, i) => (
-                    <div key={`empty-${i}`} />
-                  ))}
-                  {calendarDays.map(day => {
-                    const dateStr = day.toISOString().split("T")[0];
-                    const dayBookings = dateMap[dateStr] || [];
-                    const isToday = dateStr === today.toISOString().split("T")[0];
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {Array.from({ length: 12 }).map((_, monthIdx) => {
+                    const year = today.getFullYear();
+                    const monthStart = new Date(year, today.getMonth() + monthIdx, 1);
+                    const monthName = monthStart.toLocaleString("en", { month: "short", year: monthStart.getFullYear() !== year ? "numeric" : undefined });
+                    const daysInMonth = new Date(monthStart.getFullYear(), monthStart.getMonth() + 1, 0).getDate();
+                    const startDay = monthStart.getDay();
+
                     return (
-                      <div
-                        key={dateStr}
-                        className={`min-h-[60px] p-1.5 border text-xs ${
-                          isToday ? "border-[var(--gulf-teal)]/40 bg-[var(--gulf-teal)]/5" :
-                          dayBookings.length > 0 ? "border-[var(--gulf-orange)]/30 bg-[var(--gulf-orange)]/5" :
-                          "border-white/5 bg-[#0a0e1a]"
-                        }`}
-                      >
-                        <div className={`font-[family-name:var(--font-accent)] text-[10px] tracking-wider ${isToday ? "text-[var(--gulf-teal)]" : "text-white/40"}`}>
-                          {day.getDate()}
+                      <div key={monthIdx} className="bg-[#0a0e1a] border border-white/5 p-3">
+                        <div className="font-[family-name:var(--font-accent)] text-xs tracking-widest uppercase text-[var(--gulf-teal)] mb-2 text-center">
+                          {monthName}
                         </div>
-                        {dayBookings.map(b => (
-                          <div key={b.id} className={`mt-0.5 truncate text-[10px] px-1 py-0.5 ${
-                            b.status === "pending" ? "bg-yellow-400/10 text-yellow-400" : "bg-[var(--gulf-teal)]/10 text-[var(--gulf-teal)]"
-                          }`}>
-                            {b.name.split(" ")[0]}
-                          </div>
-                        ))}
+                        <div className="grid grid-cols-7 gap-px text-center">
+                          {["S","M","T","W","T","F","S"].map((d, i) => (
+                            <div key={i} className="text-[8px] text-white/20 py-0.5">{d}</div>
+                          ))}
+                          {Array.from({ length: startDay }).map((_, i) => <div key={`e-${i}`} />)}
+                          {Array.from({ length: daysInMonth }).map((_, dayNum) => {
+                            const d = new Date(monthStart.getFullYear(), monthStart.getMonth(), dayNum + 1);
+                            const dateStr = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+                            const dayBookings = dateMap[dateStr] || [];
+                            const isToday = dateStr === `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,"0")}-${String(today.getDate()).padStart(2,"0")}`;
+                            const hasPending = dayBookings.some(b => b.status === "pending");
+                            const hasConfirmed = dayBookings.some(b => b.status === "confirmed");
+                            return (
+                              <div
+                                key={dayNum}
+                                className={`relative text-[10px] py-1 rounded-sm ${
+                                  isToday ? "bg-[var(--gulf-teal)]/20 text-[var(--gulf-teal)] font-bold" :
+                                  hasConfirmed ? "bg-[var(--gulf-teal)]/10 text-white" :
+                                  hasPending ? "bg-yellow-400/10 text-yellow-400" :
+                                  "text-white/30"
+                                }`}
+                                title={dayBookings.length > 0 ? dayBookings.map(b => `${b.name} (${b.status})`).join(", ") : undefined}
+                              >
+                                {dayNum + 1}
+                                {dayBookings.length > 0 && (
+                                  <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full ${
+                                    hasPending ? "bg-yellow-400" : "bg-[var(--gulf-teal)]"
+                                  }`} />
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
                       </div>
                     );
                   })}
