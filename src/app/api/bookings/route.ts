@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { name, email, phone, preferred_date, notes, service_slugs } = body;
+    const { name, email, phone, preferred_date, notes, service_slugs, track_week_options } = body;
 
     if (!name || !email || !preferred_date || !service_slugs?.length) {
       return NextResponse.json({ error: "Name, email, date, and at least one service are required" }, { status: 400 });
@@ -54,9 +54,20 @@ export async function POST(req: NextRequest) {
 
     const total_cents = services.reduce((sum, s) => sum + s.price_cents, 0);
 
+    // Validate track_week_options if provided
+    let twOpts: string | null = null;
+    if (track_week_options) {
+      try {
+        const parsed = typeof track_week_options === "string" ? JSON.parse(track_week_options) : track_week_options;
+        twOpts = JSON.stringify(parsed);
+      } catch {
+        twOpts = null;
+      }
+    }
+
     const result = db.prepare(`
-      INSERT INTO bookings (user_id, name, email, phone, preferred_date, notes, services_json, total_cents, status)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending')
+      INSERT INTO bookings (user_id, name, email, phone, preferred_date, notes, services_json, total_cents, status, track_week_options)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?)
     `).run(
       user?.id || null,
       name.slice(0, 200),
@@ -65,7 +76,8 @@ export async function POST(req: NextRequest) {
       preferred_date,
       notes ? String(notes).slice(0, 1000) : null,
       JSON.stringify(services.map(s => ({ slug: s.slug, title: s.title, price_cents: s.price_cents }))),
-      total_cents
+      total_cents,
+      twOpts
     );
 
     return NextResponse.json({

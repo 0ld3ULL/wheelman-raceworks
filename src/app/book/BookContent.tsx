@@ -80,6 +80,43 @@ export default function BookContent() {
     notes: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [trackWeekOpts, setTrackWeekOpts] = useState({
+    groupSize: 2,
+    guestNames: "",
+    wantsHotel: true,
+    wantsLunch: true,
+    wantsDinner: true,
+    dayOffFishing: false,
+    dayOffGolf: false,
+    dayOffCasino: false,
+    extraRequests: "",
+  });
+
+  const isTrackWeek = selected.has("track-week");
+
+  // Track Week pricing
+  const TW_BASE = 5999; // USD per person, all-inclusive
+  const TW_GROUP_DISCOUNT: Record<number, number> = { 1: 0, 2: 499, 3: 749 }; // savings per person
+  const TW_GROUP_4_PLUS_DISCOUNT = 999;
+  const TW_HOTEL_DEDUCT = 350; // deduct if they DON'T want hotel
+  const TW_LUNCH_DEDUCT = 150; // deduct if they DON'T want lunch
+  const TW_DINNER_DEDUCT = 200; // deduct if they DON'T want dinner
+  const TW_FISHING = 150; // add-on per person
+  const TW_GOLF = 120; // add-on per person
+  const TW_CASINO = 50; // add-on per person
+
+  function calcTrackWeekTotal() {
+    const size = Math.max(1, trackWeekOpts.groupSize);
+    const discount = size >= 4 ? TW_GROUP_4_PLUS_DISCOUNT : (TW_GROUP_DISCOUNT[size] || 0);
+    let perPerson = TW_BASE - discount;
+    if (!trackWeekOpts.wantsHotel) perPerson -= TW_HOTEL_DEDUCT;
+    if (!trackWeekOpts.wantsLunch) perPerson -= TW_LUNCH_DEDUCT;
+    if (!trackWeekOpts.wantsDinner) perPerson -= TW_DINNER_DEDUCT;
+    if (trackWeekOpts.dayOffFishing) perPerson += TW_FISHING;
+    if (trackWeekOpts.dayOffGolf) perPerson += TW_GOLF;
+    if (trackWeekOpts.dayOffCasino) perPerson += TW_CASINO;
+    return { perPerson, total: perPerson * size, size, discount };
+  }
 
   function toggleService(id: string) {
     setSelected((prev) => {
@@ -96,17 +133,36 @@ export default function BookContent() {
     e.preventDefault();
     setSubmitError("");
     try {
+      const payload: Record<string, unknown> = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        preferred_date: formData.date,
+        notes: formData.notes,
+        service_slugs: Array.from(selected),
+      };
+      if (isTrackWeek) {
+        const tw = calcTrackWeekTotal();
+        const activities: string[] = [];
+        if (trackWeekOpts.dayOffFishing) activities.push("Fishing");
+        if (trackWeekOpts.dayOffGolf) activities.push("Golf");
+        if (trackWeekOpts.dayOffCasino) activities.push("Casino Tour");
+        payload.track_week_options = JSON.stringify({
+          group_size: trackWeekOpts.groupSize,
+          guest_names: trackWeekOpts.guestNames,
+          wants_hotel: trackWeekOpts.wantsHotel,
+          wants_lunch: trackWeekOpts.wantsLunch,
+          wants_dinner: trackWeekOpts.wantsDinner,
+          day_off_activities: activities,
+          extra_requests: trackWeekOpts.extraRequests,
+          price_per_person_usd: tw.perPerson,
+          total_usd: tw.total,
+        });
+      }
       const res = await fetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          preferred_date: formData.date,
-          notes: formData.notes,
-          service_slugs: Array.from(selected),
-        }),
+        body: JSON.stringify(payload),
       });
       if (res.ok) {
         setSubmitted(true);
@@ -216,10 +272,133 @@ export default function BookContent() {
             </div>
           </div>
 
+          {/* Track Week Options */}
+          {isTrackWeek && (() => {
+            const tw = calcTrackWeekTotal();
+            return (
+              <div className="mb-12">
+                <h2 className="font-[family-name:var(--font-display)] text-2xl tracking-[0.1em] uppercase text-white/80 mb-6">
+                  1b. Your Track Week
+                </h2>
+                <div className="bg-[#0a0e1a] border border-[var(--gulf-teal)]/20 p-6 space-y-6">
+                  {/* Group size */}
+                  <div>
+                    <label className="block text-white/30 text-xs font-[family-name:var(--font-accent)] tracking-widest uppercase mb-2">
+                      How many drivers?
+                    </label>
+                    <div className="flex items-center gap-4">
+                      <input type="number" min={1} max={30} value={trackWeekOpts.groupSize}
+                        onChange={(e) => setTrackWeekOpts({ ...trackWeekOpts, groupSize: Math.max(1, parseInt(e.target.value) || 1) })}
+                        className="w-24 bg-[#050811] border border-white/10 px-4 py-3 text-white text-center text-xl font-[family-name:var(--font-display)] focus:border-[var(--gulf-teal)] focus:outline-none" />
+                      <span className="text-white/30 text-sm">
+                        {tw.discount > 0 && <span className="text-[var(--gulf-teal)]">Save ${tw.discount.toLocaleString()} each!</span>}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Guest names */}
+                  <div>
+                    <label className="block text-white/30 text-xs font-[family-name:var(--font-accent)] tracking-widest uppercase mb-2">
+                      Names of everyone coming
+                    </label>
+                    <textarea value={trackWeekOpts.guestNames}
+                      onChange={(e) => setTrackWeekOpts({ ...trackWeekOpts, guestNames: e.target.value })}
+                      rows={2} placeholder="Mike Johnson, Dave Smith, Tom Wilson..."
+                      className="w-full bg-[#050811] border border-white/10 px-4 py-3 text-white focus:border-[var(--gulf-teal)] focus:outline-none resize-none" />
+                  </div>
+
+                  {/* Inclusions */}
+                  <div>
+                    <label className="block text-white/30 text-xs font-[family-name:var(--font-accent)] tracking-widest uppercase mb-3">
+                      What do you want us to organise?
+                    </label>
+                    <div className="space-y-3">
+                      {[
+                        { key: "wantsHotel" as const, label: "Hotel / Accommodation", deduct: TW_HOTEL_DEDUCT, icon: "🏨" },
+                        { key: "wantsLunch" as const, label: "Lunch (all days)", deduct: TW_LUNCH_DEDUCT, icon: "🍽️" },
+                        { key: "wantsDinner" as const, label: "Dinner (all days)", deduct: TW_DINNER_DEDUCT, icon: "🍷" },
+                      ].map(({ key, label, deduct, icon }) => (
+                        <label key={key} className="flex items-center justify-between cursor-pointer group">
+                          <div className="flex items-center gap-3">
+                            <input type="checkbox" checked={trackWeekOpts[key]}
+                              onChange={(e) => setTrackWeekOpts({ ...trackWeekOpts, [key]: e.target.checked })}
+                              className="w-5 h-5 accent-[var(--gulf-teal)]" />
+                            <span className="text-white/70 group-hover:text-white transition-colors">
+                              {icon} {label}
+                            </span>
+                          </div>
+                          <span className="text-white/20 text-xs">
+                            {trackWeekOpts[key] ? "Included" : <span className="text-[var(--gulf-orange)]">-${deduct}/person</span>}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Day off activities */}
+                  <div>
+                    <label className="block text-white/30 text-xs font-[family-name:var(--font-accent)] tracking-widest uppercase mb-3">
+                      Day off activities (optional add-ons)
+                    </label>
+                    <div className="space-y-3">
+                      {[
+                        { key: "dayOffFishing" as const, label: "Deep Sea Fishing — Subic Bay", price: TW_FISHING, icon: "🎣" },
+                        { key: "dayOffGolf" as const, label: "Golf — Mimosa Plus or Clark Sun Valley", price: TW_GOLF, icon: "⛳" },
+                        { key: "dayOffCasino" as const, label: "Casino Tour — Hann Resort & more", price: TW_CASINO, icon: "🎰" },
+                      ].map(({ key, label, price, icon }) => (
+                        <label key={key} className="flex items-center justify-between cursor-pointer group">
+                          <div className="flex items-center gap-3">
+                            <input type="checkbox" checked={trackWeekOpts[key]}
+                              onChange={(e) => setTrackWeekOpts({ ...trackWeekOpts, [key]: e.target.checked })}
+                              className="w-5 h-5 accent-[var(--gulf-orange)]" />
+                            <span className="text-white/70 group-hover:text-white transition-colors">
+                              {icon} {label}
+                            </span>
+                          </div>
+                          <span className={trackWeekOpts[key] ? "text-[var(--gulf-orange)] text-xs" : "text-white/20 text-xs"}>
+                            +${price}/person
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Extra requests */}
+                  <div>
+                    <label className="block text-white/30 text-xs font-[family-name:var(--font-accent)] tracking-widest uppercase mb-2">
+                      Anything else you need?
+                    </label>
+                    <textarea value={trackWeekOpts.extraRequests}
+                      onChange={(e) => setTrackWeekOpts({ ...trackWeekOpts, extraRequests: e.target.value })}
+                      rows={2} placeholder="Dietary requirements, equipment requests, special occasions..."
+                      className="w-full bg-[#050811] border border-white/10 px-4 py-3 text-white focus:border-[var(--gulf-teal)] focus:outline-none resize-none" />
+                  </div>
+
+                  {/* Live Price */}
+                  <div className="border-t border-white/10 pt-4">
+                    <div className="flex justify-between items-center text-sm text-white/40 mb-1">
+                      <span>${tw.perPerson.toLocaleString()} per driver</span>
+                      <span>&times; {tw.size} driver{tw.size > 1 ? "s" : ""}</span>
+                    </div>
+                    <div className="flex justify-between items-end">
+                      <span className="text-white/30 text-xs font-[family-name:var(--font-accent)] tracking-widest uppercase">Estimated Total</span>
+                      <span className="font-[family-name:var(--font-display)] text-4xl text-[var(--gulf-teal)]">
+                        ${tw.total.toLocaleString()}
+                      </span>
+                    </div>
+                    <p className="text-white/20 text-xs mt-2">
+                      USD. Final price confirmed by Boodie after review.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
+
           {/* Contact details */}
           <div className="mb-12">
             <h2 className="font-[family-name:var(--font-display)] text-2xl tracking-[0.1em] uppercase text-white/80 mb-6">
-              2. Your Details
+              {isTrackWeek ? "2" : "2"}. Your Details
             </h2>
             <div className="grid sm:grid-cols-2 gap-4">
               <div>

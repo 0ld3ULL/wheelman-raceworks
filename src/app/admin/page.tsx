@@ -39,6 +39,19 @@ interface Booking {
   total_cents: number;
   status: string;
   created_at: string;
+  track_week_options: string | null;
+}
+
+interface TrackWeekOptions {
+  group_size: number;
+  guest_names: string;
+  wants_hotel: boolean;
+  wants_lunch: boolean;
+  wants_dinner: boolean;
+  day_off_activities: string[];
+  extra_requests: string;
+  price_per_person_usd: number;
+  total_usd: number;
 }
 
 export default function AdminPage() {
@@ -242,17 +255,26 @@ export default function AdminPage() {
 
           function BookingCard({ booking, showActions }: { booking: Booking; showActions?: boolean }) {
             const services = JSON.parse(booking.services_json) as { title: string; price_cents: number }[];
+            const twOpts: TrackWeekOptions | null = booking.track_week_options ? JSON.parse(booking.track_week_options) : null;
             return (
-              <div className="bg-[#0a0e1a] border border-white/5 p-5">
+              <div className={`bg-[#0a0e1a] border p-5 ${twOpts ? "border-[var(--gulf-teal)]/20" : "border-white/5"}`}>
                 <div className="flex justify-between items-start mb-2">
                   <div>
                     <h3 className="font-[family-name:var(--font-display)] text-lg tracking-wider uppercase text-white">
-                      {booking.name}
+                      {twOpts && "✈️ "}{booking.name}
                     </h3>
                     <p className="text-white/40 text-xs">{booking.email} {booking.phone && `| ${booking.phone}`}</p>
                   </div>
-                  <div className="font-[family-name:var(--font-display)] text-lg text-[var(--gulf-orange)]">
-                    ₱{(booking.total_cents / 100).toLocaleString()}
+                  <div className="text-right">
+                    {twOpts ? (
+                      <div className="font-[family-name:var(--font-display)] text-lg text-[var(--gulf-teal)]">
+                        ${twOpts.total_usd.toLocaleString()} USD
+                      </div>
+                    ) : (
+                      <div className="font-[family-name:var(--font-display)] text-lg text-[var(--gulf-orange)]">
+                        ₱{(booking.total_cents / 100).toLocaleString()}
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className="flex items-center gap-3 text-xs text-white/30 mb-2">
@@ -262,6 +284,42 @@ export default function AdminPage() {
                 <div className="text-white/30 text-sm mb-2">
                   {services.map((s) => s.title).join(" + ")}
                 </div>
+                {/* Track Week Details */}
+                {twOpts && (
+                  <div className="border border-[var(--gulf-teal)]/10 bg-[var(--gulf-teal)]/5 p-3 mb-3 text-xs space-y-1.5">
+                    <div className="flex items-center justify-between text-white/50">
+                      <span>👥 {twOpts.group_size} driver{twOpts.group_size > 1 ? "s" : ""} — ${twOpts.price_per_person_usd.toLocaleString()}/person</span>
+                    </div>
+                    {twOpts.guest_names && <div className="text-white/40">Names: {twOpts.guest_names}</div>}
+                    <div className="flex flex-wrap gap-2">
+                      <span className={twOpts.wants_hotel ? "text-[var(--gulf-teal)]" : "text-white/20 line-through"}>🏨 Hotel</span>
+                      <span className={twOpts.wants_lunch ? "text-[var(--gulf-teal)]" : "text-white/20 line-through"}>🍽️ Lunch</span>
+                      <span className={twOpts.wants_dinner ? "text-[var(--gulf-teal)]" : "text-white/20 line-through"}>🍷 Dinner</span>
+                    </div>
+                    {twOpts.day_off_activities.length > 0 && (
+                      <div className="text-[var(--gulf-orange)]">Day off: {twOpts.day_off_activities.join(", ")}</div>
+                    )}
+                    {twOpts.extra_requests && <div className="text-white/30 italic">&quot;{twOpts.extra_requests}&quot;</div>}
+                    {showActions && booking.status !== "completed" && (
+                      <div className="pt-2 border-t border-white/5">
+                        <label className="text-white/30 text-[10px] font-[family-name:var(--font-accent)] tracking-widest uppercase">Adjust Total (USD)</label>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className="text-white/30">$</span>
+                          <input type="number" key={`price-${booking.id}-${twOpts.total_usd}`} defaultValue={twOpts.total_usd}
+                            onBlur={(e) => {
+                              const newTotal = parseFloat(e.target.value) || 0;
+                              const updated = { ...twOpts, total_usd: newTotal, price_per_person_usd: Math.round(newTotal / twOpts.group_size) };
+                              fetch("/api/admin/bookings", {
+                                method: "PUT", headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ id: booking.id, track_week_options: JSON.stringify(updated) }),
+                              }).then(() => fetchBookings());
+                            }}
+                            className="w-28 bg-[#050811] border border-white/10 px-2 py-1 text-white text-sm focus:border-[var(--gulf-teal)] focus:outline-none" />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
                 {booking.notes && <p className="text-white/20 text-xs italic mb-2">&quot;{booking.notes}&quot;</p>}
                 {showActions && (
                   <div className="flex gap-2 mt-3">

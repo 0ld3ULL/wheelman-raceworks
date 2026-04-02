@@ -165,10 +165,13 @@ function initSchema(db: Database.Database) {
     CREATE INDEX IF NOT EXISTS idx_tw_costs_week ON track_week_costs(track_week_id);
   `);
 
-  // Migrate: add completed_at column if missing
+  // Migrate: add columns if missing
   const cols = db.prepare("PRAGMA table_info(bookings)").all() as { name: string }[];
   if (!cols.some(c => c.name === "completed_at")) {
     db.exec("ALTER TABLE bookings ADD COLUMN completed_at TEXT");
+  }
+  if (!cols.some(c => c.name === "track_week_options")) {
+    db.exec("ALTER TABLE bookings ADD COLUMN track_week_options TEXT");
   }
 
   // Seed services if empty
