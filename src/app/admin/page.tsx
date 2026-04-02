@@ -333,10 +333,21 @@ export default function AdminPage() {
                       <>
                         <button onClick={() => updateBookingStatus(booking.id, "completed")} className="btn-primary text-xs py-1 px-4">Mark Completed</button>
                         {JSON.parse(booking.services_json).some((s: {title: string}) => s.title.toLowerCase().includes("track week")) && (
-                          <Link href={`/admin/track-weeks?from_booking=${booking.id}&name=${encodeURIComponent(booking.name)}&date=${booking.preferred_date}`}
-                            className="btn-secondary text-xs py-1 px-4 inline-block">
+                          <button onClick={async () => {
+                            const res = await fetch("/api/admin/track-weeks/from-booking", {
+                              method: "POST", headers: { "Content-Type": "application/json" },
+                              body: JSON.stringify({ booking_id: booking.id }),
+                            });
+                            if (res.ok) {
+                              const data = await res.json();
+                              window.location.href = `/admin/track-weeks/${data.trackWeek.id}`;
+                            } else {
+                              const err = await res.json();
+                              alert(err.error || "Failed to create track week");
+                            }
+                          }} className="btn-secondary text-xs py-1 px-4">
                             ✈️ Create Track Week
-                          </Link>
+                          </button>
                         )}
                       </>
                     )}
