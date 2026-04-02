@@ -26,6 +26,7 @@ interface Event {
   type: string;
   published: number;
   registered: number;
+  attendees: { name: string; email: string }[];
 }
 
 interface Booking {
@@ -239,6 +240,17 @@ export default function AdminPage() {
                     </h3>
                     <p className="text-white/40 text-sm mt-1">{event.date} | {event.time} | {event.location}</p>
                     <p className="text-white/30 text-sm mt-1">{event.registered} RSVPs / {event.capacity} capacity</p>
+                    {event.attendees?.length > 0 && (
+                      <div className="mt-3 border-t border-white/5 pt-2 space-y-1">
+                        <p className="text-white/20 text-[10px] font-[family-name:var(--font-accent)] tracking-widest uppercase">Attendees</p>
+                        {event.attendees.map((a, i) => (
+                          <div key={i} className="text-xs">
+                            <span className="text-[var(--gulf-teal)]">{a.name}</span>
+                            <span className="text-white/30 ml-2">{a.email}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                   <button onClick={() => deleteEvent(event.id)} className="text-red-400/50 hover:text-red-400 text-sm">
                     Delete

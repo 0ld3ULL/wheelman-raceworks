@@ -21,9 +21,22 @@ export async function GET(req: NextRequest) {
     FROM events e
     ORDER BY e.date DESC
     LIMIT ? OFFSET ?
-  `).all(limit, offset);
+  `).all(limit, offset) as { id: number; [key: string]: unknown }[];
 
-  return NextResponse.json({ events });
+  // Fetch RSVP attendees for each event
+  const getAttendees = db.prepare(`
+    SELECT u.name, u.email FROM rsvps r
+    JOIN users u ON u.id = r.user_id
+    WHERE r.event_id = ? AND r.status = 'confirmed'
+    ORDER BY r.created_at
+  `);
+
+  const eventsWithAttendees = events.map(event => ({
+    ...event,
+    attendees: getAttendees.all(event.id) as { name: string; email: string }[],
+  }));
+
+  return NextResponse.json({ events: eventsWithAttendees });
 }
 
 export async function POST(req: NextRequest) {
