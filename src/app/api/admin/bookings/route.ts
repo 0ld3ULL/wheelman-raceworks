@@ -51,8 +51,13 @@ export async function PUT(req: NextRequest) {
   }
 
   const db = getDb();
-  db.prepare("UPDATE bookings SET status = ?, updated_at = datetime('now') WHERE id = ?")
-    .run(status, id);
+  if (status === "completed") {
+    db.prepare("UPDATE bookings SET status = ?, updated_at = datetime('now'), completed_at = datetime('now') WHERE id = ?")
+      .run(status, id);
+  } else {
+    db.prepare("UPDATE bookings SET status = ?, updated_at = datetime('now'), completed_at = NULL WHERE id = ?")
+      .run(status, id);
+  }
 
   return NextResponse.json({ ok: true });
 }

@@ -203,40 +203,52 @@ export default function AdminPage() {
         )}
 
         {/* Bookings */}
-        {tab === "bookings" && (
-          <div className="space-y-4">
-            {bookings.map((booking) => {
-              const services = JSON.parse(booking.services_json) as { title: string; price_cents: number }[];
-              return (
-                <div key={booking.id} className="bg-[#0a0e1a] border border-white/5 p-6">
-                  <div className="flex justify-between items-start mb-3">
-                    <div>
-                      <h3 className="font-[family-name:var(--font-display)] text-xl tracking-wider uppercase text-white">
-                        {booking.name}
-                      </h3>
-                      <p className="text-white/40 text-sm">{booking.email} {booking.phone && `| ${booking.phone}`}</p>
-                      <p className="text-white/30 text-xs mt-1">Date: {booking.preferred_date} | Booked: {new Date(booking.created_at).toLocaleDateString()}</p>
-                    </div>
-                    <div className="text-right">
-                      <span className={`text-xs font-[family-name:var(--font-accent)] tracking-widest uppercase px-2 py-1 border ${
-                        booking.status === "pending" ? "text-yellow-400 border-yellow-400/20" :
-                        booking.status === "confirmed" ? "text-[var(--gulf-teal)] border-[var(--gulf-teal)]/20" :
-                        booking.status === "paid" ? "text-green-400 border-green-400/20" :
-                        booking.status === "completed" ? "text-white/40 border-white/10" :
-                        "text-red-400 border-red-400/20"
-                      }`}>
-                        {booking.status}
-                      </span>
-                      <div className="font-[family-name:var(--font-display)] text-xl text-[var(--gulf-orange)] mt-2">
-                        ₱{(booking.total_cents / 100).toLocaleString()}
-                      </div>
-                    </div>
+        {tab === "bookings" && (() => {
+          const pending = bookings.filter(b => b.status === "pending");
+          const booked = bookings.filter(b => b.status === "confirmed").sort((a, b) => a.preferred_date.localeCompare(b.preferred_date));
+          const completed = bookings.filter(b => b.status === "completed").sort((a, b) => b.created_at.localeCompare(a.created_at));
+          const cancelled = bookings.filter(b => b.status === "cancelled");
+
+          // Calendar: build a map of dates → bookings for confirmed + pending
+          const calendarBookings = [...pending, ...booked];
+          const dateMap: Record<string, Booking[]> = {};
+          calendarBookings.forEach(b => {
+            if (!dateMap[b.preferred_date]) dateMap[b.preferred_date] = [];
+            dateMap[b.preferred_date].push(b);
+          });
+          const today = new Date();
+          const calendarDays: Date[] = [];
+          for (let i = 0; i < 28; i++) {
+            const d = new Date(today);
+            d.setDate(d.getDate() + i);
+            calendarDays.push(d);
+          }
+
+          function BookingCard({ booking, showActions }: { booking: Booking; showActions?: boolean }) {
+            const services = JSON.parse(booking.services_json) as { title: string; price_cents: number }[];
+            return (
+              <div className="bg-[#0a0e1a] border border-white/5 p-5">
+                <div className="flex justify-between items-start mb-2">
+                  <div>
+                    <h3 className="font-[family-name:var(--font-display)] text-lg tracking-wider uppercase text-white">
+                      {booking.name}
+                    </h3>
+                    <p className="text-white/40 text-xs">{booking.email} {booking.phone && `| ${booking.phone}`}</p>
                   </div>
-                  <div className="text-white/30 text-sm mb-3">
-                    {services.map((s) => s.title).join(" + ")}
+                  <div className="font-[family-name:var(--font-display)] text-lg text-[var(--gulf-orange)]">
+                    ₱{(booking.total_cents / 100).toLocaleString()}
                   </div>
-                  {booking.notes && <p className="text-white/20 text-sm italic mb-3">&quot;{booking.notes}&quot;</p>}
-                  <div className="flex gap-2">
+                </div>
+                <div className="flex items-center gap-3 text-xs text-white/30 mb-2">
+                  <span>📅 {booking.preferred_date}</span>
+                  <span>🕐 Submitted {new Date(booking.created_at).toLocaleDateString()}</span>
+                </div>
+                <div className="text-white/30 text-sm mb-2">
+                  {services.map((s) => s.title).join(" + ")}
+                </div>
+                {booking.notes && <p className="text-white/20 text-xs italic mb-2">&quot;{booking.notes}&quot;</p>}
+                {showActions && (
+                  <div className="flex gap-2 mt-3">
                     {booking.status === "pending" && (
                       <>
                         <button onClick={() => updateBookingStatus(booking.id, "confirmed")} className="btn-primary text-xs py-1 px-4">Confirm</button>
@@ -247,12 +259,124 @@ export default function AdminPage() {
                       <button onClick={() => updateBookingStatus(booking.id, "completed")} className="btn-primary text-xs py-1 px-4">Mark Completed</button>
                     )}
                   </div>
+                )}
+              </div>
+            );
+          }
+
+          return (
+            <div className="space-y-10">
+              {/* Calendar — next 4 weeks */}
+              <div>
+                <h2 className="font-[family-name:var(--font-display)] text-2xl tracking-[0.1em] uppercase text-white mb-4">
+                  Calendar
+                </h2>
+                <div className="grid grid-cols-7 gap-1">
+                  {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(d => (
+                    <div key={d} className="text-center text-white/30 text-xs font-[family-name:var(--font-accent)] tracking-widest uppercase py-2">{d}</div>
+                  ))}
+                  {/* Leading empty cells to align first day */}
+                  {Array.from({ length: calendarDays[0].getDay() }).map((_, i) => (
+                    <div key={`empty-${i}`} />
+                  ))}
+                  {calendarDays.map(day => {
+                    const dateStr = day.toISOString().split("T")[0];
+                    const dayBookings = dateMap[dateStr] || [];
+                    const isToday = dateStr === today.toISOString().split("T")[0];
+                    return (
+                      <div
+                        key={dateStr}
+                        className={`min-h-[60px] p-1.5 border text-xs ${
+                          isToday ? "border-[var(--gulf-teal)]/40 bg-[var(--gulf-teal)]/5" :
+                          dayBookings.length > 0 ? "border-[var(--gulf-orange)]/30 bg-[var(--gulf-orange)]/5" :
+                          "border-white/5 bg-[#0a0e1a]"
+                        }`}
+                      >
+                        <div className={`font-[family-name:var(--font-accent)] text-[10px] tracking-wider ${isToday ? "text-[var(--gulf-teal)]" : "text-white/40"}`}>
+                          {day.getDate()}
+                        </div>
+                        {dayBookings.map(b => (
+                          <div key={b.id} className={`mt-0.5 truncate text-[10px] px-1 py-0.5 ${
+                            b.status === "pending" ? "bg-yellow-400/10 text-yellow-400" : "bg-[var(--gulf-teal)]/10 text-[var(--gulf-teal)]"
+                          }`}>
+                            {b.name.split(" ")[0]}
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  })}
                 </div>
-              );
-            })}
-            {bookings.length === 0 && <p className="text-white/30">No bookings yet.</p>}
-          </div>
-        )}
+              </div>
+
+              {/* Pending — needs action */}
+              {pending.length > 0 && (
+                <div>
+                  <div className="flex items-center gap-3 mb-4">
+                    <h2 className="font-[family-name:var(--font-display)] text-2xl tracking-[0.1em] uppercase text-yellow-400">
+                      Pending
+                    </h2>
+                    <span className="text-xs font-[family-name:var(--font-accent)] tracking-widest text-yellow-400/60 border border-yellow-400/20 px-2 py-0.5">
+                      {pending.length} AWAITING
+                    </span>
+                  </div>
+                  <div className="space-y-3">
+                    {pending.map(b => <BookingCard key={b.id} booking={b} showActions />)}
+                  </div>
+                </div>
+              )}
+
+              {/* Booked — confirmed, upcoming */}
+              <div>
+                <div className="flex items-center gap-3 mb-4">
+                  <h2 className="font-[family-name:var(--font-display)] text-2xl tracking-[0.1em] uppercase text-[var(--gulf-teal)]">
+                    Booked
+                  </h2>
+                  <span className="text-xs font-[family-name:var(--font-accent)] tracking-widest text-[var(--gulf-teal)]/60 border border-[var(--gulf-teal)]/20 px-2 py-0.5">
+                    {booked.length} UPCOMING
+                  </span>
+                </div>
+                {booked.length === 0 ? (
+                  <p className="text-white/30 text-sm">No upcoming bookings.</p>
+                ) : (
+                  <div className="space-y-3">
+                    {booked.map(b => <BookingCard key={b.id} booking={b} showActions />)}
+                  </div>
+                )}
+              </div>
+
+              {/* Completed */}
+              <div>
+                <div className="flex items-center gap-3 mb-4">
+                  <h2 className="font-[family-name:var(--font-display)] text-2xl tracking-[0.1em] uppercase text-white/40">
+                    Completed
+                  </h2>
+                  <span className="text-xs font-[family-name:var(--font-accent)] tracking-widest text-white/20 border border-white/10 px-2 py-0.5">
+                    {completed.length} DONE
+                  </span>
+                </div>
+                {completed.length === 0 ? (
+                  <p className="text-white/30 text-sm">No completed bookings yet.</p>
+                ) : (
+                  <div className="space-y-3">
+                    {completed.map(b => <BookingCard key={b.id} booking={b} />)}
+                  </div>
+                )}
+              </div>
+
+              {/* Cancelled (collapsed) */}
+              {cancelled.length > 0 && (
+                <div>
+                  <h2 className="font-[family-name:var(--font-display)] text-lg tracking-[0.1em] uppercase text-red-400/40 mb-3">
+                    Cancelled ({cancelled.length})
+                  </h2>
+                  <div className="space-y-2 opacity-50">
+                    {cancelled.map(b => <BookingCard key={b.id} booking={b} />)}
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })()}
       </div>
     </div>
   );

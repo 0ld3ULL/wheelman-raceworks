@@ -93,6 +93,12 @@ function initSchema(db: Database.Database) {
     CREATE INDEX IF NOT EXISTS idx_events_date ON events(date);
   `);
 
+  // Migrate: add completed_at column if missing
+  const cols = db.prepare("PRAGMA table_info(bookings)").all() as { name: string }[];
+  if (!cols.some(c => c.name === "completed_at")) {
+    db.exec("ALTER TABLE bookings ADD COLUMN completed_at TEXT");
+  }
+
   // Seed services if empty
   const count = db.prepare("SELECT COUNT(*) as c FROM services").get() as { c: number };
   if (count.c === 0) {
