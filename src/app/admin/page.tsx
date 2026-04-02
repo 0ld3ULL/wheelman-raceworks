@@ -2,6 +2,7 @@
 
 import { useAuth } from "@/lib/AuthContext";
 import { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
 
 interface Stats {
   users: number;
@@ -165,6 +166,21 @@ export default function AdminPage() {
             ))}
           </div>
         )}
+        {tab === "dashboard" && (
+          <Link href="/admin/track-weeks" className="block mt-6">
+            <div className="bg-[#0a0e1a] border border-[var(--gulf-teal)]/20 p-6 hover:border-[var(--gulf-teal)]/50 transition-colors cursor-pointer">
+              <div className="flex items-center justify-between">
+                <div>
+                  <span className="font-[family-name:var(--font-display)] text-xl tracking-wider uppercase text-[var(--gulf-teal)]">
+                    ✈️ Track Weeks
+                  </span>
+                  <p className="text-white/30 text-sm mt-1">Manage logistics — schedule, hotel, guests, costs</p>
+                </div>
+                <span className="text-[var(--gulf-teal)] text-2xl">&rarr;</span>
+              </div>
+            </div>
+          </Link>
+        )}
 
         {/* Events */}
         {tab === "events" && (
@@ -256,7 +272,15 @@ export default function AdminPage() {
                       </>
                     )}
                     {booking.status === "confirmed" && (
-                      <button onClick={() => updateBookingStatus(booking.id, "completed")} className="btn-primary text-xs py-1 px-4">Mark Completed</button>
+                      <>
+                        <button onClick={() => updateBookingStatus(booking.id, "completed")} className="btn-primary text-xs py-1 px-4">Mark Completed</button>
+                        {JSON.parse(booking.services_json).some((s: {title: string}) => s.title.toLowerCase().includes("track week")) && (
+                          <Link href={`/admin/track-weeks?from_booking=${booking.id}&name=${encodeURIComponent(booking.name)}&date=${booking.preferred_date}`}
+                            className="btn-secondary text-xs py-1 px-4 inline-block">
+                            ✈️ Create Track Week
+                          </Link>
+                        )}
+                      </>
                     )}
                   </div>
                 )}

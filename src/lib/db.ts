@@ -91,6 +91,78 @@ function initSchema(db: Database.Database) {
     CREATE INDEX IF NOT EXISTS idx_bookings_email ON bookings(email);
     CREATE INDEX IF NOT EXISTS idx_rsvps_event ON rsvps(event_id);
     CREATE INDEX IF NOT EXISTS idx_events_date ON events(date);
+
+    -- Track Week management
+    CREATE TABLE IF NOT EXISTS track_weeks (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL,
+      start_date TEXT NOT NULL,
+      end_date TEXT NOT NULL,
+      num_days INTEGER DEFAULT 7,
+      status TEXT DEFAULT 'planning' CHECK(status IN ('planning','confirmed','active','completed','cancelled')),
+      hotel_name TEXT,
+      hotel_cost_per_night INTEGER DEFAULT 0,
+      hotel_checkin TEXT,
+      hotel_checkout TEXT,
+      hotel_booked INTEGER DEFAULT 0,
+      hotel_notes TEXT,
+      dietary_notes TEXT,
+      meal_plan_notes TEXT,
+      revenue_cents INTEGER DEFAULT 0,
+      notes TEXT,
+      created_at TEXT DEFAULT (datetime('now')),
+      updated_at TEXT DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS track_week_days (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      track_week_id INTEGER NOT NULL,
+      day_number INTEGER NOT NULL,
+      date TEXT NOT NULL,
+      day_type TEXT DEFAULT 'off' CHECK(day_type IN ('arrival','track','off','departure')),
+      start_time TEXT,
+      end_time TEXT,
+      notes TEXT,
+      FOREIGN KEY (track_week_id) REFERENCES track_weeks(id) ON DELETE CASCADE,
+      UNIQUE(track_week_id, day_number)
+    );
+
+    CREATE TABLE IF NOT EXISTS track_week_guests (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      track_week_id INTEGER NOT NULL,
+      booking_id INTEGER,
+      name TEXT NOT NULL,
+      email TEXT,
+      phone TEXT,
+      needs_pickup INTEGER DEFAULT 0,
+      arrival_flight TEXT,
+      arrival_datetime TEXT,
+      departure_flight TEXT,
+      departure_datetime TEXT,
+      dietary TEXT,
+      notes TEXT,
+      created_at TEXT DEFAULT (datetime('now')),
+      FOREIGN KEY (track_week_id) REFERENCES track_weeks(id) ON DELETE CASCADE,
+      FOREIGN KEY (booking_id) REFERENCES bookings(id)
+    );
+
+    CREATE TABLE IF NOT EXISTS track_week_costs (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      track_week_id INTEGER NOT NULL,
+      category TEXT NOT NULL CHECK(category IN ('hotel','food','track_fees','transport','equipment','other')),
+      description TEXT NOT NULL,
+      amount_cents INTEGER NOT NULL,
+      currency TEXT DEFAULT 'USD',
+      paid INTEGER DEFAULT 0,
+      created_at TEXT DEFAULT (datetime('now')),
+      FOREIGN KEY (track_week_id) REFERENCES track_weeks(id) ON DELETE CASCADE
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_track_weeks_status ON track_weeks(status);
+    CREATE INDEX IF NOT EXISTS idx_track_weeks_start ON track_weeks(start_date);
+    CREATE INDEX IF NOT EXISTS idx_tw_days_week ON track_week_days(track_week_id);
+    CREATE INDEX IF NOT EXISTS idx_tw_guests_week ON track_week_guests(track_week_id);
+    CREATE INDEX IF NOT EXISTS idx_tw_costs_week ON track_week_costs(track_week_id);
   `);
 
   // Migrate: add completed_at column if missing
