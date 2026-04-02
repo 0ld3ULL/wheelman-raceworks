@@ -61,6 +61,15 @@ export default function AdminPage() {
   const [events, setEvents] = useState<Event[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [showEventForm, setShowEventForm] = useState(false);
+  const [twPlanningCount, setTwPlanningCount] = useState(0);
+
+  const fetchTrackWeekCount = useCallback(async () => {
+    const res = await fetch("/api/admin/track-weeks?status=planning");
+    if (res.ok) {
+      const data = await res.json();
+      setTwPlanningCount(data.trackWeeks?.length || 0);
+    }
+  }, []);
 
   const fetchStats = useCallback(async () => {
     const res = await fetch("/api/admin/stats");
@@ -91,8 +100,9 @@ export default function AdminPage() {
       fetchStats();
       fetchEvents();
       fetchBookings();
+      fetchTrackWeekCount();
     }
-  }, [user, fetchStats, fetchEvents, fetchBookings]);
+  }, [user, fetchStats, fetchEvents, fetchBookings, fetchTrackWeekCount]);
 
   if (loading) return <div className="pt-24 text-center text-white/40">Loading...</div>;
   if (!user || user.role !== "admin") {
@@ -186,8 +196,17 @@ export default function AdminPage() {
                 <div>
                   <span className="font-[family-name:var(--font-display)] text-xl tracking-wider uppercase text-[var(--gulf-teal)]">
                     ✈️ Track Weeks
+                    {twPlanningCount > 0 && (
+                      <span className="inline-flex items-center justify-center ml-3 w-7 h-7 rounded-full bg-[var(--gulf-orange)] text-white text-sm font-bold animate-pulse">
+                        {twPlanningCount}
+                      </span>
+                    )}
                   </span>
-                  <p className="text-white/30 text-sm mt-1">Manage logistics — schedule, hotel, guests, costs</p>
+                  <p className="text-white/30 text-sm mt-1">
+                    {twPlanningCount > 0
+                      ? `${twPlanningCount} track week${twPlanningCount > 1 ? "s" : ""} awaiting review`
+                      : "Manage logistics — schedule, hotel, guests, costs"}
+                  </p>
                 </div>
                 <span className="text-[var(--gulf-teal)] text-2xl">&rarr;</span>
               </div>
